@@ -2,10 +2,11 @@
 import React from "react"
 import { NavLink, useNavigate } from "react-router-dom"
 import { LogInIcon, Leaf } from "lucide-react"
+import { useAuthStore } from "../store/useAuthStore"
 
 export const Header = () => {
   const navigate = useNavigate()
-  
+  const {authUser,logout}=useAuthStore()
   return (
     <header className="sticky top-0 z-50 bg-green-200 px-6 py-4 shadow-sm">
       <div className="max-w-6xl mx-auto flex items-center justify-between">
@@ -97,11 +98,15 @@ export const Header = () => {
         </nav>
         
         <button
-          onClick={() => navigate("/signin")}
+          onClick={() => {!authUser?navigate("/signin"):logout()}}
           className="flex items-center justify-center space-x-2 px-4 py-2 bg-green-600 text-white font-semibold text-md rounded-md shadow-lg transition duration-300 ease-in-out transform hover:scale-105 hover:shadow-xl hover:bg-green-700"
         >
           <LogInIcon className="size-4" />
-          <span>LOGIN</span>
+          <span>
+           {
+            authUser?"LOGOUT":"LOGIN"
+           }
+          </span>
         </button>
       </div>
     </header>

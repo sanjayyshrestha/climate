@@ -4,10 +4,11 @@ import { generateToken } from '../lib/utils.js'
 import { validatePassword } from '../lib/validate-password.js'
 
 const signup=async (req,res)=>{
-  const {fullName,email,password}=req.body
+  const {userName,email,password}=req.body
+  console.log(userName,email,password)
  try {
     //hash password
-    if(!fullName || !email || !password){
+    if(!userName || !email || !password){
       return res.status(400).json({message:"All fields are required"})
     }
 
@@ -22,7 +23,7 @@ const signup=async (req,res)=>{
     const hashedPassword=await bcrypt.hash(password,10);
 
     const newUser=new User({
-      fullName,
+      userName,
       email,
       password:hashedPassword
     })
@@ -32,9 +33,8 @@ const signup=async (req,res)=>{
       generateToken(newUser._id,res)
       res.status(201).json({
         _id:newUser._id,
-        fullName:newUser.fullName,
+        fullName:newUser.userName,
         email:newUser.email,
-        profilePic:newUser.profilePic
       })
     }else{
       res.status(400).json({message:"Invalid user data"})
@@ -48,6 +48,7 @@ const signup=async (req,res)=>{
 
 const login=async (req,res)=>{
   const{email,password}=req.body;
+  console.log(email,password)
   try {
     if(!email || !password){
       return res.status(400).json({message:"All fields are required"})
@@ -65,9 +66,8 @@ const login=async (req,res)=>{
 
     res.status(200).json({
       _id:user._id,
-        fullName:user.fullName,
+        userName:user.userName,
         email:user.email,
-        profilePic:user.profilePic
     })
     
   } catch (error) {
@@ -100,6 +100,5 @@ export {
   signup,
   login,
   logout,
-  updateProfile,
   checkAuth
 }

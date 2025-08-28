@@ -3,17 +3,20 @@ import React from "react"
 import { useState } from "react"
 import { Leaf, Eye, EyeOff } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { useAuthStore } from "../store/useAuthStore"
 
 const SignInPage = () => {
+  const {login,authUser}=useAuthStore()
     const navigate=useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
     console.log("Sign in attempt:", { email, password })
-    // Add your authentication logic here
+    await login({email,password})
+    navigate('/')
   }
 
   return (

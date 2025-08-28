@@ -3,18 +3,21 @@ import React from "react"
 import { useState } from "react"
 import { Leaf, Eye, EyeOff } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { useAuthStore } from "../store/useAuthStore"
 
 const SignUpPage = () => {
+  const {signup}=useAuthStore()
   const navigate=useNavigate()
   const [username, setUsername] = useState("")
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-
   const handleSubmit = (e) => {
     e.preventDefault()
-    console.log("Sign up attempt:", { username, email, password })
-    // Add your registration logic here
+
+    console.log("Sign up attempt:", { userName:username, email, password })
+    signup({userName:username,email,password})
+    
   }
 
   return (
